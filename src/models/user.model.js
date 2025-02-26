@@ -1,5 +1,7 @@
 import mongoose , {Schema} from 'mongoose';
-import { JsonWebTokenError } from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
+// const { JsonWebTokenError } = jwt;
+
 import bcrypt from 'bcrypt'
 
 const userSchema = new Schema(
@@ -25,14 +27,15 @@ const userSchema = new Schema(
             index:true,
             trim:true
         },
-        avatar:{
-            type:String, //cloudnary url
-            required:true,
+        // avatar:{
+        //     type:String, //cloudnary url
+        //     required:true,
 
-        },
-        coverImage:{
-           type:String,//cloudnary url
-        },
+        // },
+        // coverImage:{
+        //     type:String,//cloudnary url
+        // },
+           
         watchHistory:[
             {
                 type:Schema.Types.ObjectId,
@@ -61,7 +64,7 @@ userSchema.method.isPasswordCorrect = async function(password){
    return  await bcrypt.compare(password, this.password)
 }
 
-userSchema.method.generateRefreshToken = function(){
+userSchema.method.generateAccessToken = function(){
     
     return  JsonWebTokenError.sign(
         {
@@ -76,7 +79,7 @@ userSchema.method.generateRefreshToken = function(){
         }
     )
 }
-userSchema.method,generateRefreshToken=function(){
+userSchema.method.generateRefreshToken = function(){
     return  JsonWebTokenError.sign(
         {
             _id:this._id,
